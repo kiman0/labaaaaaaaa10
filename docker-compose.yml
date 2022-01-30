@@ -1,0 +1,30 @@
+version: "3.5"
+
+services:
+  flaskapp:
+    build: .
+    image: muuzii/flaskapp
+    container_name: flask_app
+    restart: always
+    environment:
+      - APP_NAME=MyFlaskApp
+    expose:
+      - 8080
+
+  postgres:
+    build: ./database
+    image: muuzii/postgresdb
+    container_name: flask_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    container_name: flask_nginx
+    restart: always
+    ports:
+      - "80:80"
+
+volumes:
+  pgdata:
+    external: false
